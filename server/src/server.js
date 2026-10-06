@@ -4,15 +4,19 @@ dns.setServers([
     "8.8.8.8",
     "1.1.1.1"
 ]);
-const express = require("express");
-const cors = require("cors");
-const dotenv = require("dotenv");
-const patientRoutes = require("./routes/patientRoutes");
-const medicalRecordRoutes = require("./routes/medicalRecordRoutes");
 
-const connectDB = require("./config/db");
+const dotenv = require("dotenv");
 
 dotenv.config();
+
+const express = require("express");
+const cors = require("cors");
+
+const patientRoutes = require("./routes/patientRoutes");
+const medicalRecordRoutes = require("./routes/medicalRecordRoutes");
+const authRoutes = require("./routes/authRoutes");
+
+const connectDB = require("./config/db");
 
 const app = express();
 
@@ -20,6 +24,7 @@ app.use(cors());
 app.use(express.json());
 app.use("/api/patients", patientRoutes);
 app.use("/api/medical-records", medicalRecordRoutes);
+app.use("/api/auth", authRoutes);
 
 app.get("/api/health", (req, res) => {
     res.json({
