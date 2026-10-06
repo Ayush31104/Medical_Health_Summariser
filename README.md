@@ -1,197 +1,372 @@
-# 🏥 Medical Health Summariser
+# MediClarity 🩺
 
-An AI-powered application that simplifies complex medical information by generating clear, concise, and easy-to-understand summaries from medical documents and health-related information.
+> AI-powered Medical Health Summariser
 
-## 📌 Overview
-
-Medical reports often contain complex medical terminology that can be difficult for patients to understand. **Medical Health Summariser** aims to make this information more accessible by using AI to extract important information and present it in a simplified format.
-
-The application helps users quickly understand key details from medical documents without having to interpret complicated medical language themselves.
-
-> ⚠️ **Disclaimer:** This project is intended for educational and informational purposes only. It does not provide medical diagnosis or replace professional medical advice.
+MediClarity is a full-stack healthcare application for organizing
+patient information, uploading medical reports, extracting report
+content, and generating structured AI-powered summaries.
 
 ## ✨ Features
 
-- 📄 Upload and process medical documents
-- 🤖 AI-powered medical information summarisation
-- 📝 Converts complex medical terminology into simpler language
-- 🔍 Extracts important information from reports
-- 📋 Provides concise and structured summaries
-- 💡 Helps users better understand their medical documents
-- 🖥️ Simple and user-friendly interface
+-   User registration and login
+-   JWT-based authentication
+-   Password hashing with bcryptjs
+-   Patient management: add, view, search, edit and delete
+-   Medical report upload
+-   PDF and TXT support
+-   10 MB upload limit
+-   Medical record type selection
+-   Local PDF text extraction
+-   Gemini-based fallback processing for scanned or poor-quality PDFs
+-   Automatic AI summarisation after report upload
+-   Manual/regenerated AI summaries
+-   Structured summary sections:
+    -   Patient Overview
+    -   Key Findings
+    -   Diagnoses / Conditions
+    -   Medications
+    -   Medical History
+    -   Tests / Investigations
+    -   Follow-up Information
+    -   Important Notes
+-   Dashboard statistics
+-   Recent medical reports
+-   Report viewing and deletion
+-   Responsive React/Tailwind interface
 
-## 🛠️ Tech Stack
+## 🛠️ Technology Stack
 
-**Frontend**
-- React.js
-- JavaScript
-- Tailwind CSS
+### Frontend
 
-**Backend**
-- Python
-- FastAPI
+-   React
+-   Vite
+-   React Router
+-   Axios
+-   Tailwind CSS
+-   JavaScript / JSX
 
-**AI / NLP**
-- Large Language Models (LLMs)
-- Natural Language Processing
-- LangChain
+### Backend
 
-**Database / Storage**
-- MongoDB
+-   Node.js
+-   Express.js
+-   MongoDB
+-   Mongoose
+-   Multer
+-   PDF parsing
+-   REST API
+-   CORS
+-   dotenv
 
-**Tools & Platforms**
-- Git & GitHub
-- VS Code
+### Authentication
 
-## 🏗️ Project Architecture
+-   JSON Web Tokens (JWT)
+-   bcryptjs
 
-```text
-User
-  │
-  ▼
-Frontend
-  │
-  ▼
-FastAPI Backend
-  │
-  ├── Document Processing
-  │
-  ├── Text Extraction
-  │
-  ▼
-AI / LLM Processing
-  │
-  ▼
-Medical Summary
-  │
-  ▼
-Frontend
+### AI
+
+-   Google Gemini API
+-   Structured AI responses
+-   Medical document analysis
+-   PDF fallback processing
+
+## 🏗️ Architecture
+
+``` text
+React + Vite Frontend
+        |
+        | REST API / Axios
+        v
+Express + Node.js Backend
+        |
+        +-------------------+
+        |                   |
+        v                   v
+     MongoDB             Gemini AI
+        |
+        v
+ Patient & Medical
+     Records
 ```
 
-## 🚀 Getting Started
+## 🔄 Medical Report Workflow
 
-### Prerequisites
-
-Make sure you have the following installed:
-
-- Python 3.10+
-- Node.js
-- npm
-- Git
-
-### 1. Clone the Repository
-
-```bash
-git clone https://github.com/YOUR_USERNAME/Medical_Health_Summariser.git
-cd Medical_Health_Summariser
+``` text
+Select Patient
+      ↓
+Upload PDF / TXT
+      ↓
+Validate File
+      ↓
+Extract Text
+      ↓
+Check Extraction Quality
+      ↓
+Gemini Fallback if Required
+      ↓
+Save Medical Record
+      ↓
+Generate AI Summary
+      ↓
+Display Structured Summary
 ```
 
-### 2. Backend Setup
+## 📁 Project Structure
 
-Navigate to the backend directory:
-
-```bash
-cd backend
+``` text
+MediClarity/
+│
+├── client/
+│   ├── public/
+│   └── src/
+│       ├── components/
+│       │   └── navbar.jsx
+│       ├── pages/
+│       │   ├── Dashboard.jsx
+│       │   ├── Patients.jsx
+│       │   ├── AddPatients.jsx
+│       │   ├── EditPatient.jsx
+│       │   ├── PatientDetails.jsx
+│       │   ├── UploadReport.jsx
+│       │   ├── UploadMedicalReport.jsx
+│       │   ├── Login.jsx
+│       │   └── Signup.jsx
+│       ├── services/
+│       │   └── api.js
+│       ├── App.jsx
+│       └── main.jsx
+│
+├── server/
+│   ├── src/
+│   │   ├── config/
+│   │   │   └── db.js
+│   │   ├── controllers/
+│   │   │   ├── authController.js
+│   │   │   ├── patientController.js
+│   │   │   └── medicalRecordController.js
+│   │   ├── middleware/
+│   │   │   ├── authMiddleware.js
+│   │   │   └── uploadMiddleware.js
+│   │   ├── models/
+│   │   │   ├── User.js
+│   │   │   ├── Patient.js
+│   │   │   └── MedicalRecord.js
+│   │   ├── routes/
+│   │   │   ├── authRoutes.js
+│   │   │   ├── patientRoutes.js
+│   │   │   └── medicalRecordRoutes.js
+│   │   ├── services/
+│   │   │   ├── aiService.js
+│   │   │   └── textExtractionService.js
+│   │   └── server.js
+│   └── uploads/
+│
+└── README.md
 ```
 
-Create a virtual environment:
+## ⚙️ Installation
 
-```bash
-python -m venv venv
+### 1. Clone the repository
+
+``` bash
+git clone <YOUR_REPOSITORY_URL>
+cd MediClarity
 ```
 
-Activate it on Windows:
+### 2. Install frontend dependencies
 
-```bash
-venv\Scripts\activate
-```
-
-Install dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
-Create a `.env` file and add the required environment variables:
-
-```env
-OPENAI_API_KEY=your_api_key
-MONGODB_URI=your_mongodb_connection_string
-```
-
-Start the backend:
-
-```bash
-uvicorn main:app --reload
-```
-
-### 3. Frontend Setup
-
-Open another terminal and navigate to the frontend:
-
-```bash
-cd frontend
-```
-
-Install dependencies:
-
-```bash
+``` bash
+cd client
 npm install
 ```
 
-Start the development server:
+### 3. Install backend dependencies
 
-```bash
+Open another terminal:
+
+``` bash
+cd server
+npm install
+```
+
+## 🔐 Environment Variables
+
+Create a `.env` file inside the backend directory:
+
+``` env
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+GEMINI_API_KEY=your_gemini_api_key
+JWT_SECRET=your_long_random_jwt_secret
+```
+
+Never commit `.env` to GitHub.
+
+Recommended `.gitignore` entries:
+
+``` gitignore
+.env
+node_modules/
+uploads/
+```
+
+## ▶️ Run Locally
+
+### Backend
+
+From `server/`:
+
+``` bash
 npm run dev
 ```
 
-The application should now be available at the local development URL shown in your terminal.
+Backend:
 
-## 📂 Project Structure
-
-```text
-Medical_Health_Summariser/
-│
-├── frontend/
-│   ├── src/
-│   ├── public/
-│   └── package.json
-│
-├── backend/
-│   ├── main.py
-│   ├── requirements.txt
-│   └── ...
-│
-├── .gitignore
-├── README.md
-└── ...
+``` text
+http://localhost:5000
 ```
 
-## 🔮 Future Improvements
+### Frontend
 
-- Support for additional medical document formats
-- Improved medical terminology explanation
-- User authentication and profile management
-- Medical history tracking
-- Downloadable summaries
-- Multi-language support
-- Improved AI accuracy and response validation
-- Integration with healthcare APIs
-- Voice-based interaction
+From `client/`:
 
-## 🔐 Privacy & Security
+``` bash
+npm run dev
+```
 
-Medical information is highly sensitive. The project should be used with appropriate privacy and security measures when handling real patient information.
+Vite will display the local frontend URL, normally:
 
-Do not upload real patient medical records, API keys, passwords, or other sensitive information to GitHub.
+``` text
+http://localhost:5173
+```
+
+## 🔌 API Endpoints
+
+### Authentication
+
+``` text
+POST   /api/auth/register
+POST   /api/auth/login
+GET    /api/auth/me
+```
+
+### Patients
+
+``` text
+POST   /api/patients
+GET    /api/patients
+GET    /api/patients/:id
+PUT    /api/patients/:id
+DELETE /api/patients/:id
+```
+
+### Medical Records
+
+``` text
+POST   /api/medical-records/upload
+GET    /api/medical-records/patient/:patientId
+GET    /api/medical-records/:id/file
+POST   /api/medical-records/:id/summarize
+DELETE /api/medical-records/:id
+```
+
+### Health Check
+
+``` text
+GET /api/health
+```
+
+## 🤖 AI Summary Format
+
+The AI service produces structured information similar to:
+
+``` json
+{
+  "patientOverview": "...",
+  "keyFindings": [],
+  "diagnoses": [],
+  "medications": [],
+  "medicalHistory": [],
+  "tests": [
+    {
+      "name": "...",
+      "result": "...",
+      "unit": "...",
+      "referenceRange": "..."
+    }
+  ],
+  "followUp": [],
+  "importantNotes": []
+}
+```
+
+The summarisation workflow is designed to extract information from the
+supplied report rather than intentionally invent medical facts.
+
+## 🔒 Security & Privacy
+
+Current security-related features include:
+
+-   Password hashing
+-   JWT authentication
+-   Environment variables for secrets
+-   File type validation
+-   File size limits
+-   Backend validation
+-   Authentication middleware
+-   CORS configuration
+
+MediClarity is currently a project prototype. A production deployment
+handling real medical information would require additional privacy,
+access-control, encryption, auditing, compliance, secure storage, and
+infrastructure protections.
+
+## 🚀 Future Enhancements
+
+-   User-specific patient ownership
+-   Stronger access-control rules
+-   Profile management and profile image upload
+-   Advanced report search
+-   Report history and versioning
+-   Exportable AI summaries
+-   Cloud file storage
+-   Audit logging
+-   Production-grade security
+-   CI/CD and production deployment improvements
+
+## 🎯 Project Objective
+
+MediClarity demonstrates how a modern full-stack application and
+generative AI can be combined to make medical documents easier to
+organize and review.
+
+The project focuses on:
+
+-   Patient record management
+-   Medical document processing
+-   Structured information extraction
+-   AI-assisted summarisation
+-   A clean healthcare dashboard
+-   Practical full-stack AI integration
 
 ## 👨‍💻 Author
 
 **Ayushman Behera**
 
-- GitHub: https://github.com/Ayush31104
-- LinkedIn: https://www.linkedin.com/in/ayushman-behera-44664228/
+B.Tech Computer Science
 
-## 📄 License
+**Project:** MediClarity --- Medical Health Summariser
 
-This project is developed for educational and research purposes.
+## ⚕️ Disclaimer
+
+MediClarity is an educational/project prototype.
+
+AI-generated summaries may contain errors and must be checked against
+the original medical document and, where appropriate, reviewed by a
+qualified healthcare professional.
+
+MediClarity does not replace professional medical diagnosis, treatment,
+or clinical judgement.
+
+------------------------------------------------------------------------
+
+⭐ If you find the project useful, consider starring the repository.
